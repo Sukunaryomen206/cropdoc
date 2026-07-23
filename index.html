@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CropDoc — Advanced AI Crop Diagnostician</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="navbar">
+  <div class="nav-brand">🌿 CropDoc</div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#diagnose">Diagnose</a></li>
+    <li><a href="#dashboard">Dashboard</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#prediction">Prediction</a></li>
+    <li><a href="#progress">Progress</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="lang-switcher">
+      <button class="lang-btn active" data-lang="en">EN</button>
+      <button class="lang-btn" data-lang="hi">HI</button>
+      <button class="lang-btn" data-lang="gu">GU</button>
+    </div>
+    <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-content">
+    <span class="badge"><i class="fas fa-wifi-slash"></i> 100% Offline · AI-Powered · Farmer-First</span>
+    <h1 id="heroTitle">Diagnose Crop Diseases<br/><span class="highlight">Instantly, Anywhere</span></h1>
+    <p id="heroSub">Detect crop diseases without internet. Identify problems at the earliest stage. Get a full organic treatment plan — right on your phone.</p>
+    <div class="hero-btns">
+      <a href="#diagnose" class="btn btn-primary"><i class="fas fa-camera"></i> Scan Now</a>
+      <a href="#dashboard" class="btn btn-outline"><i class="fas fa-chart-bar"></i> Farm Dashboard</a>
+    </div>
+    <div class="offline-badge"><i class="fas fa-check-circle"></i> Works without internet after install</div>
+  </div>
+  <div class="hero-image">
+    <div class="phone-mockup">
+      <div class="phone-screen">
+        <div class="scan-animation">
+          <i class="fas fa-leaf scan-icon"></i>
+          <div class="scan-line"></div>
+          <div class="scan-result">
+            <span class="result-label">Detected</span>
+            <span class="result-name">Early Blight</span>
+            <span class="result-confidence">94% confidence</span>
+            <span class="severity-badge sev-mild">Mild · 18%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats">
+  <div class="stat"><span class="stat-num" data-target="5">0</span><span>Crops</span></div>
+  <div class="stat"><span class="stat-num" data-target="20">0</span><span>Diseases</span></div>
+  <div class="stat"><span class="stat-num" data-target="94">0</span><span>% Accuracy</span></div>
+  <div class="stat"><span class="stat-num" data-target="100">0</span><span>% Offline</span></div>
+  <div class="stat"><span class="stat-num" data-target="3">0</span><span>Languages</span></div>
+</section>
+
+<!-- DIAGNOSE SECTION -->
+<section class="demo" id="diagnose">
+  <h2 class="section-title">AI Crop Diagnosis</h2>
+  <p class="section-sub">Upload a leaf photo — offline AI will detect the disease with severity score, heatmap & treatment plan.</p>
+
+  <div class="upload-wrapper">
+    <!-- Upload Box -->
+    <div class="upload-box" id="uploadBox">
+      <input type="file" id="photoInput" accept="image/*" hidden/>
+      <div class="upload-area" id="uploadArea">
+        <i class="fas fa-cloud-upload-alt upload-icon"></i>
+        <p class="upload-title">Drag & drop leaf photo here</p>
+        <p class="upload-hint">or</p>
+        <button class="btn btn-primary" id="browseBtn"><i class="fas fa-folder-open"></i> Browse Photo</button>
+        <p class="upload-formats">JPG, PNG, WEBP · Max 10MB</p>
+      </div>
+      <div class="upload-preview" id="uploadPreview" style="display:none">
+        <img id="previewImg" src="" alt="Leaf"/>
+        <div class="preview-actions">
+          <span id="previewName" class="preview-filename"></span>
+          <button class="btn btn-primary" id="diagnoseBtn"><i class="fas fa-brain"></i> Run AI Diagnosis</button>
+          <button class="btn btn-outline" id="retakeBtn"><i class="fas fa-redo"></i> Change Photo</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Analyzing -->
+    <div class="analyzing" id="analyzing" style="display:none">
+      <div class="analyze-steps">
+        <div class="a-step" id="aStep1"><i class="fas fa-image"></i> Image preprocessing<span class="a-check"></span></div>
+        <div class="a-step" id="aStep2"><i class="fas fa-brain"></i> Running AI model<span class="a-check"></span></div>
+        <div class="a-step" id="aStep3"><i class="fas fa-map"></i> Generating heatmap<span class="a-check"></span></div>
+        <div class="a-step" id="aStep4"><i class="fas fa-leaf"></i> Building treatment plan<span class="a-check"></span></div>
+      </div>
+      <div class="analyze-spinner"></div>
+      <p>Analyzing<span class="dots"></span></p>
+      <small>On-device AI — no internet needed</small>
+    </div>
+
+    <!-- Full Result Card -->
+    <div class="result-full" id="diagnosisResult" style="display:none">
+
+      <!-- Row 1: Image + Health Score + Severity -->
+      <div class="result-top">
+        <div class="result-img-wrap">
+          <img id="resultImg" src="" alt="Analyzed"/>
+          <div class="heatmap-overlay" id="heatmapOverlay"></div>
+          <button class="heatmap-toggle" id="heatmapToggle"><i class="fas fa-fire"></i> Heatmap</button>
+        </div>
+
+        <div class="result-meta">
+          <!-- Health Score -->
+          <div class="health-score-card">
+            <div class="health-ring">
+              <svg viewBox="0 0 80 80">
+                <circle cx="40" cy="40" r="34" fill="none" stroke="#1f1f1f" stroke-width="8"/>
+                <circle cx="40" cy="40" r="34" fill="none" stroke="#00ff88" stroke-width="8"
+                  stroke-dasharray="213.6" stroke-dashoffset="42.7" stroke-linecap="round"
+                  transform="rotate(-90 40 40)" id="healthArc"/>
+              </svg>
+              <span id="healthScore">80</span>
+            </div>
+            <div>
+              <p class="hs-label">Crop Health Score</p>
+              <p class="hs-sub">Out of 100</p>
+            </div>
+          </div>
+
+          <!-- Severity -->
+          <div class="severity-card">
+            <p class="sev-title">Disease Severity</p>
+            <div class="sev-bar-wrap">
+              <div class="sev-bar">
+                <div class="sev-fill" id="sevFill" style="width:32%"></div>
+              </div>
+              <span class="sev-pct" id="sevPct">32%</span>
+            </div>
+            <div class="sev-labels">
+              <span class="sev-tag mild active-sev" id="sevMild">Mild</span>
+              <span class="sev-tag moderate" id="sevMod">Moderate</span>
+              <span class="sev-tag severe" id="sevSev">Severe</span>
+            </div>
+          </div>
+
+          <!-- Offline badge -->
+          <div class="offline-indicator"><i class="fas fa-wifi-slash"></i> Diagnosed Offline</div>
+        </div>
+      </div>
+
+      <!-- Row 2: Confidence Results -->
+      <div class="result-section">
+        <h3><i class="fas fa-search"></i> Top Predictions</h3>
+        <div id="predictionsContainer">
+          <div class="result-item">
+            <span class="result-disease">Early Blight <em>(Alternaria solani)</em></span>
+            <div class="confidence-bar"><div class="confidence-fill" style="width:94%"></div></div>
+            <span class="confidence-pct">94%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 3: Organic Treatment -->
+      <div class="result-section">
+        <h3><i class="fas fa-leaf"></i> Organic Treatment Plan</h3>
+        <div class="treatment-grid" id="treatmentContainer"></div>
+        <div class="preventive-box">
+          <i class="fas fa-shield-alt"></i>
+          <span><strong>Preventive:</strong> <span id="preventiveText">Improve air circulation around plants, avoid overhead watering, and practice crop rotation next season.</span></span>
+        </div>
+      </div>
+
+      <!-- Row 4: Voice Guidance -->
+      <div class="result-section voice-section">
+        <h3><i class="fas fa-volume-up"></i> Voice Guidance</h3>
+        <div class="voice-btns">
+          <button class="btn btn-primary" onclick="speakResult('en')"><i class="fas fa-play"></i> English</button>
+          <button class="btn btn-outline" onclick="speakResult('hi')"><i class="fas fa-play"></i> हिंदी</button>
+          <button class="btn btn-outline" onclick="speakResult('gu')"><i class="fas fa-play"></i> ગુજરાતી</button>
+        </div>
+        <p class="voice-note">Results will be read aloud in your chosen language</p>
+      </div>
+
+      <button class="btn btn-outline" id="resetBtn" style="margin-top:1rem"><i class="fas fa-redo"></i> Try Another Photo</button>
+    </div>
+  </div>
+</section>
+
+<!-- FARM DASHBOARD -->
+<section class="dashboard" id="dashboard">
+  <h2 class="section-title">Farm Dashboard</h2>
+  <p class="section-sub">View your entire farm health and scan history in one place.</p>
+
+  <div class="dash-grid">
+    <div class="dash-card dash-green">
+      <i class="fas fa-seedling dash-icon"></i>
+      <span class="dash-num" id="totalScanned">0</span>
+      <span class="dash-label">Total Scanned</span>
+    </div>
+    <div class="dash-card dash-blue">
+      <i class="fas fa-check-circle dash-icon"></i>
+      <span class="dash-num" id="healthyCount">0</span>
+      <span class="dash-label">Healthy Plants</span>
+    </div>
+    <div class="dash-card dash-red">
+      <i class="fas fa-virus dash-icon"></i>
+      <span class="dash-num" id="diseasedCount">0</span>
+      <span class="dash-label">Diseased Plants</span>
+    </div>
+    <div class="dash-card dash-yellow">
+      <i class="fas fa-heart dash-icon"></i>
+      <span class="dash-num" id="farmHealthScore">0%</span>
+      <span class="dash-label">Farm Health Score</span>
+    </div>
+  </div>
+
+  <!-- Analytics Chart -->
+  <div class="analytics-card">
+    <h3>Weekly Scan Analytics</h3>
+    <div class="bar-chart">
+      <div class="bar-group"><div class="bar-fill" style="height:60%"></div><span>Mon</span></div>
+      <div class="bar-group"><div class="bar-fill" style="height:80%"></div><span>Tue</span></div>
+      <div class="bar-group"><div class="bar-fill" style="height:45%"></div><span>Wed</span></div>
+      <div class="bar-group"><div class="bar-fill diseased" style="height:90%"></div><span>Thu</span></div>
+      <div class="bar-group"><div class="bar-fill" style="height:70%"></div><span>Fri</span></div>
+      <div class="bar-group"><div class="bar-fill diseased" style="height:55%"></div><span>Sat</span></div>
+      <div class="bar-group"><div class="bar-fill" style="height:40%"></div><span>Sun</span></div>
+    </div>
+    <div class="chart-legend">
+      <span><span class="leg-dot green"></span>Healthy</span>
+      <span><span class="leg-dot red"></span>Diseased</span>
+    </div>
+  </div>
+
+  <!-- Recent Scans -->
+  <div class="recent-scans">
+    <h3>Recent Scans</h3>
+    <div class="scan-table">
+      <div class="scan-row header">
+        <span>Crop</span><span>Disease</span><span>Severity</span><span>Date</span><span>Status</span>
+      </div>
+      <div id="scanTableBody">
+        <div class="scan-row"><span style="color:var(--muted)">No scans yet — upload a photo to get started.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DISEASE PREDICTION -->
+<section class="prediction" id="prediction">
+  <h2 class="section-title">Disease Risk Prediction</h2>
+  <p class="section-sub">5-day disease risk forecast based on weather conditions in your region.</p>
+
+  <div class="weather-bar">
+    <div class="weather-day">
+      <i class="fas fa-sun"></i>
+      <span class="w-day">Today</span>
+      <span class="w-temp">32°C</span>
+      <span class="w-humid">Humidity: 65%</span>
+      <div class="risk-meter">
+        <div class="risk-fill risk-low" style="width:25%"></div>
+      </div>
+      <span class="risk-label low">Low Risk</span>
+    </div>
+    <div class="weather-day">
+      <i class="fas fa-cloud-sun"></i>
+      <span class="w-day">Tomorrow</span>
+      <span class="w-temp">29°C</span>
+      <span class="w-humid">Humidity: 78%</span>
+      <div class="risk-meter">
+        <div class="risk-fill risk-med" style="width:55%"></div>
+      </div>
+      <span class="risk-label med">Medium Risk</span>
+    </div>
+    <div class="weather-day">
+      <i class="fas fa-cloud-rain"></i>
+      <span class="w-day">Day 3</span>
+      <span class="w-temp">26°C</span>
+      <span class="w-humid">Humidity: 92%</span>
+      <div class="risk-meter">
+        <div class="risk-fill risk-high" style="width:85%"></div>
+      </div>
+      <span class="risk-label high">High Risk 🚨</span>
+    </div>
+    <div class="weather-day">
+      <i class="fas fa-cloud-rain"></i>
+      <span class="w-day">Day 4</span>
+      <span class="w-temp">25°C</span>
+      <span class="w-humid">Humidity: 88%</span>
+      <div class="risk-meter">
+        <div class="risk-fill risk-high" style="width:75%"></div>
+      </div>
+      <span class="risk-label high">High Risk</span>
+    </div>
+    <div class="weather-day">
+      <i class="fas fa-sun"></i>
+      <span class="w-day">Day 5</span>
+      <span class="w-temp">31°C</span>
+      <span class="w-humid">Humidity: 60%</span>
+      <div class="risk-meter">
+        <div class="risk-fill risk-low" style="width:30%"></div>
+      </div>
+      <span class="risk-label low">Low Risk</span>
+    </div>
+  </div>
+
+  <div class="prediction-alert" id="weatherAlert">
+    <i class="fas fa-exclamation-triangle"></i>
+    <div>
+      <strong>Day 3 Alert:</strong> High humidity combined with rain forecast significantly increases the risk of fungal diseases (Early Blight, Rust). Apply preventive neem spray tomorrow.
+    </div>
+  </div>
+</section>
+
+<!-- PROGRESS TRACKING -->
+<section class="progress-section" id="progress">
+  <h2 class="section-title">Progress Tracking</h2>
+  <p class="section-sub">Compare before and after photos to track recovery progress and treatment effectiveness.</p>
+
+  <div class="progress-card">
+    <div class="progress-compare">
+      <div class="compare-side">
+        <div class="compare-img before-img">
+          <i class="fas fa-leaf"></i>
+          <div class="disease-overlay"></div>
+        </div>
+        <span class="compare-label">Before (Day 1)</span>
+        <span class="compare-score bad">Health: 42/100</span>
+      </div>
+      <div class="compare-arrow"><i class="fas fa-arrow-right"></i></div>
+      <div class="compare-side">
+        <div class="compare-img after-img">
+          <i class="fas fa-leaf"></i>
+        </div>
+        <span class="compare-label">After (Day 14)</span>
+        <span class="compare-score good">Health: 87/100</span>
+      </div>
+    </div>
+
+    <div class="recovery-stats">
+      <div class="rec-stat">
+        <span class="rec-num">+45</span>
+        <span>Health Points Gained</span>
+      </div>
+      <div class="rec-stat">
+        <span class="rec-num">107%</span>
+        <span>Recovery Rate</span>
+      </div>
+      <div class="rec-stat">
+        <span class="rec-num">14</span>
+        <span>Days to Recovery</span>
+      </div>
+    </div>
+
+    <div class="progress-timeline">
+      <div class="pt-item done"><span class="pt-dot"></span><span>Day 1 — Disease detected (Severity 58%)</span></div>
+      <div class="pt-item done"><span class="pt-dot"></span><span>Day 3 — Neem spray started</span></div>
+      <div class="pt-item done"><span class="pt-dot"></span><span>Day 7 — Severity reduced to 30%</span></div>
+      <div class="pt-item done"><span class="pt-dot"></span><span>Day 14 — Full recovery ✅</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <h2 class="section-title">Advanced Features</h2>
+  <p class="section-sub">Every feature is designed with farmers in mind — simple, fast, and offline-ready.</p>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon"><i class="fas fa-wifi-slash"></i></div>
+      <h3>Offline AI Detection</h3>
+      <p>Detect diseases without any internet connection. The TensorFlow Lite model runs entirely on your device.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><i class="fas fa-search-plus"></i></div>
+      <h3>Early Disease Detection</h3>
+      <p>Identify diseases at the very beginning — even when symptoms are still subtle and hard to notice.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><i class="fas fa-thermometer-half"></i></div>
+      <h3>Disease Severity %</h3>
+      <p>Get Mild, Moderate, or Severe rating with an exact percentage to help you prioritize action.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><i class="fas fa-fire"></i></div>
+      <h3>AI Heatmap</h3>
+      <p>Visually highlights the infected area on the leaf — shows exactly where the disease is spreading.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><i class="fas fa-leaf"></i></div>
+      <h3>Organic Treatment Plan</h3>
+      <p>Locally available organic solutions — neem, turmeric, garlic — with dosage and application schedule.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><i class="fas fa-cloud-sun-rain"></i></div>
+      <h3>Disease Prediction</h3>
+      <p>Forecasts disease risk for the next few days based on local weather conditions like humidity and rainfall.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><i class="fas fa-heartbeat"></i></div>
+      <h3>Crop Health Score</h3>
+      <p>Get an overall plant health score (e.g. 92/100) to understand your crop's condition at a glance.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><i class="fas fa-images"></i></div>
+      <h3>Progress Tracking</h3>
+      <p>Compare before and after photos to see recovery percentage and full treatment timeline.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><i class="fas fa-volume-up"></i></div>
+      <h3>Voice & Local Language</h3>
+      <p>Voice guidance in Gujarati, Hindi, and English — accessible for all farmers regardless of literacy level.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><i class="fas fa-chart-bar"></i></div>
+      <h3>Farm Dashboard</h3>
+      <p>View total scanned plants, healthy vs diseased count, weekly analytics, and downloadable reports.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <h2 class="section-title">Get In Touch</h2>
+  <p class="section-sub">Interested in partnering, contributing data, or piloting with your farming community?</p>
+  <form class="contact-form" id="contactForm">
+    <div class="form-row">
+      <input type="text" placeholder="Your Name" required/>
+      <input type="email" placeholder="Email Address" required/>
+    </div>
+    <select>
+      <option value="">I am a...</option>
+      <option>Farmer</option>
+      <option>Agronomist / Extension Worker</option>
+      <option>NGO / Development Organization</option>
+      <option>Researcher</option>
+      <option>Investor / Partner</option>
+    </select>
+    <textarea placeholder="Your message..." rows="4" required></textarea>
+    <button type="submit" class="btn btn-primary">Send Message <i class="fas fa-paper-plane"></i></button>
+  </form>
+  <div class="form-success" id="formSuccess">
+    <i class="fas fa-check-circle"></i> Message sent! We will get back to you soon.
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <span>🌿 CropDoc</span>
+      <p>AI-powered crop disease diagnosis for every farmer, everywhere.</p>
+    </div>
+    <div class="footer-links">
+      <h4>Quick Links</h4>
+      <a href="#diagnose">Diagnose</a>
+      <a href="#dashboard">Dashboard</a>
+      <a href="#prediction">Prediction</a>
+      <a href="#progress">Progress</a>
+    </div>
+    <div class="footer-links">
+      <h4>Resources</h4>
+      <a href="#">PlantVillage Dataset</a>
+      <a href="#">Research Papers</a>
+      <a href="#">Agronomist Network</a>
+      <a href="#">Open Source</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 CropDoc. Built to help farmers grow better. 🌾</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
