@@ -1,0 +1,35 @@
+# ── Python / Flask ──
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+.venv/
+*.egg-info/
+
+# ── Database & uploads (generated at runtime, don't commit) ──
+backend/database/*.db
+backend/database/*.sqlite3
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# ── Environment / secrets ──
+.env
+.env.local
+*.pem
+*.key
+
+# ── VS Code ──
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# ── OS files ──
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Logs ──
+*.log
